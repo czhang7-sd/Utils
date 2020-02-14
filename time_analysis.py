@@ -22,7 +22,12 @@ def time_wrapper(func):
         return result_value
     return wrapper
 
+
 @time_wrapper
-def foo(v):
+def exp_test(v):
+    print('test the time wrapper')
     return np.exp(v + 3)
-print(foo(3.))
+
+
+if __name__ == '__main__':
+    print(exp_test(3.))
