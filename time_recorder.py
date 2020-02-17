@@ -10,6 +10,8 @@
 import time
 import logging
 from contextlib import contextmanager
+level = logging.DEBUG
+logging.basicConfig(format='[%(levelname)s] %(message)s', level=level)
 
 
 @contextmanager
@@ -35,7 +37,7 @@ def time_record_(message, print_=False):
 
 
 if __name__ == '__main__':
-    with time_record_("test time recoder", print_=True):
+    with time_record_("test time recoder", print_=False):
         res = 0
         for i in range(1000):
             for j in range(1000):
