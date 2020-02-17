@@ -31,3 +31,4 @@ def exp_test(v):
 
 if __name__ == '__main__':
     print(exp_test(3.))
+    print(exp_test(-3.))
