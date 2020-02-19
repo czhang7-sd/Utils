@@ -52,7 +52,18 @@ def beam_search(decoder, source_lengths, encoder_outputs, decoder_input, decoder
             topk_index_cat = torch.cat((topk_index_cat, topk_index), 0)
             topk_score_cat = topk_prob_cat.sum(dim=0)
 
-            
+        end_idx = (topk_index == 2).nonzero()
+
+        if len(end_idx) > 0:
+            end_idx = end_idx[:, 1]
+            for l in range(len(end_idx)):
+                i = end_idx[l]
+                temp_score = topk_prob_cat.mean(dim=0)[i].item()
+                temp_sentence = topk_index_cat[:, i]
+                end_sentences.append((topk_index_cat[:, i].clone(), temp_score))
+        next_idx = (topk_index != 2).nonzero()
+
+        if len()
 
 
 
