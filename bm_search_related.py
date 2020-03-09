@@ -54,3 +54,27 @@ def beam_search(decoder, source_lengths, encoder_outputs, decoder_input, decoder
 
 
 
+        end_idx = (topk_index == 2).nonzero()
+
+        if len(end_idx) > 0:
+            end_idx = end_idx[:, 1]
+            for l in range(len(end_idx)):
+                i = end_idx[l]
+                temp_score = topk_prob_cat.mean(dim=0)[i].item()
+                temp_sentence = topk_index_cat[:, i]
+                end_sentences.append((topk_index_cat[:, i].clone(), temp_score))
+        next_idx = (topk_index != 2).nonzero()
+
+        if len(next_idx) > 0:
+            next_idx = next_idx[:, 1]
+            if len(next_idx) > beam_size:
+                temp = torch.topk(topk_score_cat[next_idx], beam_size)[1]
+                next_idx = next_idx[temp]
+
+                decoder_hidden = decoder_hidden[:, next_idx / beam_size, :]
+                encoder_outputs = encoder_outputs[:, next_idx / beam_size, :]
+                decoder_input = topk_index[:, next_idx]
+                topk_index_cat = topk_index_cat[:, next_idx]
+                topk_prob_cat = topk_prob_cat[:, next_idx]
+
+ 
