@@ -4,8 +4,9 @@
 """
 @author: czhang
 @contact: 
-@Time : 2020/3/20 0020 17:15 
+@Time : 2020/2/20 0020 17:15
 """
+
 import psycopg2
 import pandas.io.sql as sqlio
 
@@ -40,7 +41,7 @@ class PgDbIo():
             raise e
         return df
 
-    def insert_data(self, table_name, fields, values):
+    def insert_data(self, table, fields, values):
         try:
             cursor = self.conn.cursor()
             assert len(fields) == len(values)
@@ -51,7 +52,15 @@ class PgDbIo():
             values_conv = [r"""'""" + i + r"""'""" if type(i) == str else i for i in values]
             values_str = bracket_str.format(*values_conv)
 
-            
+            sql = r""" INSERT INTO {} """.format(table) + field_str + " VALUES (" + values_str + ")"
+
+            cursor.execute(sql)
+            self.conn.commit()
+            cursor.close()
+        except Exception as e:
+            raise e
+
+        return None
 
 
 
