@@ -77,4 +77,8 @@ def beam_search(decoder, source_lengths, encoder_outputs, decoder_input, decoder
                 topk_index_cat = topk_index_cat[:, next_idx]
                 topk_prob_cat = topk_prob_cat[:, next_idx]
 
- 
+            else:
+                break
+        end_sentences.sort(key=lambda s: s[1], reverse=True)
+        end_sentence = end_sentences[0][0]
+        end_lengths = torch.tensor(end_sentence.size(0))
